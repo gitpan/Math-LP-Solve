@@ -1,4 +1,5 @@
 use ExtUtils::MakeMaker;
+my $VERSION = '3.02'; # major number equals that of underlying lp_solve library
 
 # the underlying C library
 my $lp_solve_dist = 'lp_solve_3.0';
@@ -59,7 +60,8 @@ WriteMakefile(
       'ABSTRACT'  => 'Wrapper around the lp_solve 3.0 library for solving linear programs',
       'AUTHOR'    => 'Wim Verhaegen <wim.verhaegen@ieee.org>',
     ) : (),
-    'VERSION'   => '3.01', # major number equals that of underlying lp_solve library
+    #'VERSION'   => $VERSION, 
+    'VERSION_FROM' => 'Solve.pm',
     'LIBS'	=> ["-lfl -ll -L$lp_solve_dist -llpk"],  
     'DEFINE'	=> '',
     'INC'	=> "-I$lp_solve_dist",
@@ -75,6 +77,7 @@ WriteMakefile(
 	    . "\tswig -perl5 -module Math__LP__Solve -package Math::LP::Solve -dascii -o Solve.c Solve.i\n" # runs swig with proper options
 	    . "\t\$(PERL) -p -e '/^(package|bootstrap)\\b/ && s/__/::/g' Math__LP__Solve.pm > Solve.pm\n" # makes a clean .pm file which fits into the module hierarchy
             . "\t\$(PERL) contrib/export_swigged_symbols.pl --swig-docfile=Solve_wrap.doc --pm-file=Solve.pm\n" # tags all swigged symbols for exporting
+	    . "\t\$(PERL) contrib/add_pm_version_number.pl --package=Math::LP::Solve --version=$VERSION --pm-file=Solve.pm\n" # writes the version number to Solve.pm
 	    . "\t\$(RM) Math__LP__Solve.pm Solve_wrap.doc\n", # removes temporary files
     },
     'realclean' => {

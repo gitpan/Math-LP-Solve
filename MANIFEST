@@ -6,6 +6,7 @@ Solve.c
 Solve.i
 Solve.pm
 Solve.pod
+contrib/add_pm_version_number.pl
 contrib/export_swigged_symbols.pl
 t/01solve.t
 t/02regress.t

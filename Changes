@@ -1,5 +1,10 @@
 Revision history for Perl extension Math::LP::Solve.
 
+3.02  Wed Nov  8 22:41:35 CET 2000
+	- fixed the wrong PERL5LIB setting in README
+	- added a version number to Solve.pm 
+	  (needed for correct installation of Math::LP)
+
 3.01  Tue Jul 25 15:22:03 2000
 	- original version; created by h2xs 1.20 with options
 		-AX -n Math::LP::Solve -v 3.01

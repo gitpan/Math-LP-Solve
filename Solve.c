@@ -16,7 +16,7 @@
 
 
 #define SWIGCODE
-/* $Header: /users/micas/verhaege/CVS/master/Math-LP-Solve/src/Solve.c,v 1.6 2000/10/31 14:47:34 verhaege Exp $ */
+/* $Header: /users/micas/verhaege/CVS/master/Math-LP-Solve/src/Solve.c,v 1.8 2000/11/07 15:16:42 verhaege Exp $ */
 /* Implementation : PERL 5 */
 
 #define SWIGPERL

@@ -40,8 +40,8 @@ following sequence:
 	% make test
 	% make pure_install
 
-Do not forget to include <dir> in your PERL5LIB search path to use the
-extension in this case.
+Do not forget to include <dir>/lib/perl5 in your PERL5LIB search path 
+to use the extension in this case.
 
 AUTHOR
 
