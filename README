@@ -1,11 +1,11 @@
 Math::LP::Solve is a wrapper for the functions in the lp_solve library for
 solving linear programs, which is written by Michel Berkelaar. 
 The source code of this library is available at ftp://ftp.ics.ele.tue.nl/pub/lp_solve/
-The Perl extension is based on the latest version (lp_solve_3.0).
+Math::LP::Solve 3.03 is based on the latest version lp_solve 3.2.
 
 INSTALLATION
 
-Download lp_solve_3.0.tar.gz and untar it in the Math-LP-Solve-* directory,
+Download lp_solve_3.2.tar.gz and untar it in the Math-LP-Solve-* directory,
 then compile the library (which requires some tweaking of the Makefile).
 Consult the lp_solve documentation if any help is needed here. 
 
@@ -46,11 +46,11 @@ to use the extension in this case.
 AUTHOR
 
 The Perl extension Math::LP::Solve to the lp_solve library is written
-by Wim Verhaegen <wim.verhaegen@ieee.org>.
+by Wim Verhaegen <wimv@cpan.org>.
 
 COPYRIGHT
 
-Copyright(c) 2000 Wim Verhaegen. All rights reserved. 
+Copyright(c) 2000-2001 Wim Verhaegen. All rights reserved. 
 This program is free software; you can redistribute
 and/or modify it under the same terms as Perl itself.
 

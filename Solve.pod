@@ -1,7 +1,6 @@
 =head1 NAME
 
-Math::LP::Solve - a perl wrapper for the lp_solve library which handles
-linear and mixed integer/linear programs.
+Math::LP::Solve - perl wrapper for the lp_solve linear program solver 
 
 =head1 SYNOPSIS
 
@@ -34,6 +33,11 @@ linear and mixed integer/linear programs.
   $x2 = ptrvalue($solution,3);
 
 =head1 DESCRIPTION
+
+Math::LP::Solve is a wrapper around the freeware lp_solve library,
+which solves linear and mixed linear/integer programs. Most functions
+and data structures in the file lpkit.h of the lp_solve distribution
+are made available in the Math::LP::Solve namespace.
 
 This document does not go into the details of how to setup and
 solve a linear program using the lp_solve library. For details
@@ -155,7 +159,7 @@ sets the name of the LP to C<$name>;
 
 returns the name of the row resp. column with index C<$i>;
 
-=item lprec_row_name_set($lp,$i,$name) and lprec_col_name_set($lp,$i.$name)
+=item lprec_row_name_set($lp,$i,$name) and lprec_col_name_set($lp,$i,$name)
 
 sets the name of the row resp. column with index C<$i> to C<$name>;
 
@@ -237,11 +241,11 @@ on top of Math::LP::Solve. For more info look at L<Math::LP>.
 
 =head1 AUTHOR
 
-Wim Verhaegen  E<lt>wim.verhaegen@ieee.orgE<gt>
+Wim Verhaegen  E<lt>wimv@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2000 Wim Verhaegen. All rights reserved. 
+Copyright (c) 2000-2001 Wim Verhaegen. All rights reserved. 
 This program is free software; you can redistribute
 and/or modify it under the same terms as Perl itself.
 

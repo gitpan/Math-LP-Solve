@@ -1,8 +1,8 @@
 use ExtUtils::MakeMaker;
-my $VERSION = '3.02'; # major number equals that of underlying lp_solve library
+my $VERSION = '3.03'; # major number equals that of underlying lp_solve library
 
 # the underlying C library
-my $lp_solve_dist = 'lp_solve_3.0';
+my $lp_solve_dist = 'lp_solve_3.2';
 my $liblpk        = "$lp_solve_dist/liblpk.a";
 my $tarball       = "$lp_solve_dist.tar.gz";
 
@@ -30,9 +30,14 @@ if(-e $liblpk) {
 else {
     warn "*** You do not have $liblpk yet.\n",
          "*** I will attempt to compile it for you.\n";
-    my @make_flags = ( # these compilation flags will be tries in succession, until one combination works
-       {MATHLIB => '-lm'}, # works for HP-UX, Solaris, IRIX, Digital
+    my @make_flags = ( 
+       # These compilation flags will be tried in succession, until one combination works.
+       # If none of these work for you, but you do find a valid combination for the
+       # platform you are working on, please mail them to wimv@cpan.org. I will incorporate
+       # them in the next release of Math::LP::Solve.
+       {MATHLIB => '-lm', LEX => 'lex', YACC => 'yacc'}, # works for HP-UX, Solaris, Digital, IRIX
        {MATHLIB => '-lm', LEX => 'flex -l', LEXLIB => '-lfl'}, # works for Linux
+       {MATHLIB => '-lm'}, # just the minimally required compilation flags for any platform
     );
     while(1) {
 	my $rh_flags = shift @make_flags or
@@ -57,8 +62,8 @@ else {
 WriteMakefile(
     'NAME'	=> 'Math::LP::Solve',
     ($] > 5.004) ? (
-      'ABSTRACT'  => 'Wrapper around the lp_solve 3.0 library for solving linear programs',
-      'AUTHOR'    => 'Wim Verhaegen <wim.verhaegen@ieee.org>',
+      'ABSTRACT'  => 'perl wrapper for the lp_solve linear program solver',
+      'AUTHOR'    => 'Wim Verhaegen <wimv@cpan.org>',
     ) : (),
     #'VERSION'   => $VERSION, 
     'VERSION_FROM' => 'Solve.pm',
@@ -89,6 +94,16 @@ sub FetchDistribution { # gets a tarball by ftp and puts it in the current direc
     my $url = shift;
     warn "Fetching $url ...\n";
 
+    # load the ftp module
+    eval "require Net::FTP";
+    if($@) {
+	die "It seems you do not have the package Net::FTP installed.\n",
+	    "Please download $url manually and restart the installation.\n",
+	    "NOTE: Net::FTP is only needed for automatically installing\n",
+	    "      Math::LP::Solve, and not for using Math::LP::Solve in\n",
+	    "      your scripts.\n";
+    }
+
     # parse the url
     my($host,$path,$file);
     $url =~ s{^.*://}{}; # strips of 'ftp://' or 'http://'
@@ -97,7 +112,6 @@ sub FetchDistribution { # gets a tarball by ftp and puts it in the current direc
     $file = $url;
     
     # fetch the file
-    require Net::FTP;
     my $ftp = Net::FTP->new($host);
     $ftp->login() or die "Anonymous login to host `$host' failed.\n";
     $ftp->cwd($path) or die "Failed to cd to `$path' at host `$host'\n";
@@ -109,7 +123,17 @@ sub FetchDistribution { # gets a tarball by ftp and puts it in the current direc
 sub ExtractDistribution { # extracts a tarball in the current directory
     my $tarball = shift;
     warn "Extracting $tarball ...\n";
-    require Archive::Tar;
+
+    # load the untarring module
+    eval "require Archive::Tar";
+    if($@) {
+	die "It seems you do not have the package Archive::Tar installed.\n",
+            "Please untar $tarball manually and restart the installation.\n",
+            "NOTE:: Archive::Tar is only needed for automatically installing\n",
+            "       Math::LP::Solve, and not for using Math::LP::Solve in\n",
+	    "       your scripts.\n";
+    }
+
     Archive::Tar->extract_archive($tarball) or die "Could not untar `$tarball'\n";
 }
 
@@ -127,7 +151,8 @@ sub CompileDistribution {
     use Cwd;
     my $cwd = cwd();
     my $make = $Config{make};
-    $cmd = join ' ', $make, map { "$_=\"" . $make_flags{$_} . "\"" } sort keys %make_flags;
+    (my $target = $liblpk) =~ s{.*/}{};
+    $cmd = join ' ', $make, $target, map { "$_=\"" . $make_flags{$_} . "\"" } sort keys %make_flags;
     $cmd = "cd $dist && $cmd && cd $cwd";
     warn "Compiling in $dist with `$cmd' ...\n";
     my $rc = 0xffff & system $cmd;
