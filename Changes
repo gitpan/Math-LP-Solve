@@ -1,0 +1,5 @@
+Revision history for Perl extension Math::LP::Solve.
+
+3.01  Tue Jul 25 15:22:03 2000
+	- original version; created by h2xs 1.20 with options
+		-AX -n Math::LP::Solve -v 3.01
